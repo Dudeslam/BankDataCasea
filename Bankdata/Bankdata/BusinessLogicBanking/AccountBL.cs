@@ -1,36 +1,41 @@
-﻿using Bankdata.Models;
+﻿using Bankdata.Mappers;
+using Bankdata.DTO;
+using Bankdata.Models;
 using Bankdata.Repository;
 
 namespace Bankdata.BusinessLogicBanking
 {
     public class AccountBL : IAccountBL
     {
-        private readonly IRepository<Account> _Accountrepository;
-
-        public AccountBL(IRepository<Account> AccountRepository)
+        private AccountMapper accMapper = new AccountMapper();
+        private readonly IAccountRepository<Account> _Accountrepository;
+        
+        public AccountBL(IAccountRepository<Account> AccountRepository)
         {
             _Accountrepository = AccountRepository;
         }
-        public List<Account> GetAccounts()
+        public List<AccountDTO> GetAccounts()
         {
-            var ListOfAccounts = _Accountrepository.GetAll().ToList();
-            return ListOfAccounts;
+            List<AccountDTO> accounts = new List<AccountDTO>();
+            _Accountrepository.GetAll().ToList().ForEach(x => accounts.Add(new AccountDTO(x.AccountID, x.FirstName, x.SurName, x.Balance)));
+            return accounts;
         }
 
-        public Account GetAccount(int id)
+        public AccountDTO? GetAccount(int id)
         {
-            return _Accountrepository.GetByID(id) ?? new Account();
+            var accData = _Accountrepository.GetByID(id);
+            return accData != null ? AccountMapper.ToDTO(accData) : null;
         }
 
         public bool UpdateAccount(int id)
         {
-            var account = new Account();
+            var account = new AccountDTO();
             return true;
         }
 
-        public void CreateAccount(Account acc)
+        public bool CreateAccount(AccountDTO acc)
         {
-            _Accountrepository.Create(acc);
+            return _Accountrepository.Add(AccountMapper.ToAccount(acc));
         }
 
         public bool DeleteAccount(int id)

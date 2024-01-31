@@ -2,9 +2,11 @@
 {
     public class Transaction
     {
-        public DateTime? Created { get; set; }
+        public int TransactionId { get; set; }
+        public DateTime Modified { get; set; }
         public int ReceiverID { get; set; }
         public int AccountID { get; set; }
-        public int Amount { get; set; } = 0;
+        public double Amount { get; set; } = 0;
+        public int TransactionID { get; set; }
     }
 }

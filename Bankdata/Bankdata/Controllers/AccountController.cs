@@ -1,5 +1,6 @@
 using Bankdata.BusinessLogicBanking;
 using Bankdata.Models;
+using Bankdata.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -10,34 +11,36 @@ namespace Bankdata.Controllers
     public class AccountController : ControllerBase
     {
         private readonly ILogger<AccountController> _logger;
+        private readonly ITransactionBL _transactionBL;
         private readonly IAccountBL _accountBL;
 
-        public AccountController(ILogger<AccountController> logger, IAccountBL accountBL)
+        public AccountController(ILogger<AccountController> logger, IAccountBL accountBL, ITransactionBL transactionBL)
         {
             _logger = logger;
             _accountBL = accountBL;
+            _transactionBL = transactionBL;
         }
 
 
         [HttpGet("Accounts")]
         public IActionResult GetAccounts()
         {
-            List<Account> accounts = _accountBL.GetAccounts();
-
+            List<AccountDTO> accounts = _accountBL.GetAccounts();
             return accounts.Count() != 0 ? Ok(accounts) : NotFound();
         }
 
         [HttpGet("Accounts/[id]")]
         public IActionResult GetAccountData(int id)
         {
-            return Ok(_accountBL.GetAccount(id));
+            var accountData = _accountBL.GetAccount(id);
+            return accountData != null ? Ok(accountData) : NotFound();
         }
 
-        [HttpPut("Accounts")]
-        public IActionResult CreateAccount(Account acc)
+        [HttpPost("Accounts")]
+        public IActionResult CreateAccount(AccountDTO acc)
         {
-            return Ok(_accountBL.CreateAccount(acc));
 
+            return Ok(_accountBL.CreateAccount(acc));
         }
 
         [HttpDelete("Accounts/[id]")]
@@ -46,16 +49,24 @@ namespace Bankdata.Controllers
             return _accountBL.DeleteAccount(id) == true ? Ok(true) : BadRequest();
         }
 
-        [HttpGet("Transactions/[id]")]
-        public IActionResult GetTransaction()
+        [HttpGet("AccountTransactions/[id]")]
+        public IActionResult GetTransactionsFromAccount(int id)
         {
-            throw new NotImplementedException();
+            return Ok(_transactionBL.GetAllTransaction(id));
         }
 
-        [HttpGet("Transfer/[id]")]
-        public IActionResult TransferSum(int id)
+        [HttpGet("Transaction/[id]")]
+        public IActionResult GetTransaction(int id)
         {
-            throw new NotImplementedException();
+            return Ok(_transactionBL.GetTransaction(id));
+
+        }
+
+        [HttpPost("Transfer/[id]")]
+        public IActionResult TransferSum(int provId, int recId, int sum)
+        {
+            var dto = new TransactionDTO(provId, recId, sum, DateTime.UtcNow);
+            return Ok(_transactionBL.Transfer(dto));
         }
     }
 }

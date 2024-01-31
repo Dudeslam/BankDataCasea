@@ -1,65 +1,77 @@
-﻿using Bankdata.DTO;
+﻿using Bankdata.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bankdata.Repository
 {
-    public class AccountRepo<T> : IAccountRepository<AccountDTO> where T : class
+    public class AccountRepo<T> : IAccountRepository<Account> where T : class
     {
-        private readonly IAccountRepository<T> _repository;
-        private readonly DbContext _context;
-        private readonly DbSet<T> _dbSet;
+        private readonly DbContext _context = null!;
+        private readonly DbSet<Account> _dbSet = null!;
 
-        public void Add(AccountDTO entity)
+        public bool Add(Account entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Add(entity);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public bool Delete(AccountDTO entity)
+        public bool Delete(Account entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Remove(entity);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
 
-        public IEnumerable<AccountDTO> GetAll()
+        public IEnumerable<Account> GetAll()
         {
             var accList = _dbSet.ToList();
-            IEnumerable<AccountDTO> retList = new List<AccountDTO>();
+            IEnumerable<Account> retList = new List<Account>();
             foreach (var acc in accList)
             {
-                new AccountDTO
+                new Account
                 {
-                    AccountID = acc.id,
-                    Balance = acc.balance,
-                    SurName = acc.surName,
-                    FirstName = acc.firstName,
+                    AccountID = acc.AccountID,
+                    Balance = acc.Balance,
+                    SurName = acc.SurName,
+                    FirstName = acc.FirstName,
                 };
             }
 
             return retList;
         }
 
-        public AccountDTO? GetByID(int id)
+        public Account? GetByID(int id)
         {
-            var account = _dbSet.FirstOrDefault(x => x.id == id);
-            AccountDTO accDTO = new AccountDTO()
+            var account = _dbSet.FirstOrDefault(x => x.AccountID == id);
+            return account != null ? new Account()
             {
                 AccountID = account.AccountID,
                 Balance = account.Balance,
                 FirstName = account.FirstName,
                 SurName = account.SurName
-            };
-
-            return accDTO;
+            } : null;
         }
 
 
-        public void Update(AccountDTO entity)
+        public void Update(Account entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
-        }
-
-        public void Create(AccountDTO entity)
-        {
-            _context.Add(entity);
+            _context.SaveChanges();
         }
     }
 }

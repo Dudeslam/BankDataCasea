@@ -1,14 +1,13 @@
-﻿using Bankdata.DTO;
+﻿using Bankdata.Models;
 
 namespace Bankdata.Repository
 {
-    public interface IAccountRepository<AccountDTO>
+    public interface IAccountRepository<Account>
     {
-        AccountDTO GetByID(int id);
-        IEnumerable<AccountDTO> GetAll();
-        void Add(AccountDTO entity);
-        bool Delete(AccountDTO entity);
-        void Update(AccountDTO entity);
-        void Create(AccountDTO entity);
+        Account? GetByID(int id);
+        IEnumerable<Account> GetAll();
+        bool Add(Account entity);
+        bool Delete(Account entity);
+        void Update(Account entity);
     }
 }
