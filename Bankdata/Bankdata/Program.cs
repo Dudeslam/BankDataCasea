@@ -1,9 +1,13 @@
 using Bankdata.BusinessLogicBanking;
 using Bankdata.Models;
 using Bankdata.Repository;
+using Microsoft.Data.SqlClient;
 using System.Transactions;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionBuilder = new SqlConnectionStringBuilder();
+
+builder.Configuration.AddJsonFile("appsettings.json");
 
 // Add services to the container.
 
@@ -17,7 +21,11 @@ builder.Services.AddScoped<IAccountBL, AccountBL>();
 builder.Services.AddScoped<ITransactionBL, TransactionBL>();
 builder.Services.AddHttpContextAccessor();
 
-
+builder.Services.AddScoped<SqlConnection>(_ =>
+{
+    var conString = builder.Configuration.GetConnectionString("BankDataCaseDB");
+    return new SqlConnection(conString);
+});
 
 
 var app = builder.Build();

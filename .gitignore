@@ -1,0 +1,33 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+/BankDataFront/node_modules
+.DS_Store
+dist
+dist-ssr
+coverage
+*.local
+
+/BankDataFront/cypress/videos/
+/BankDataFront/cypress/screenshots/
+
+# Editor directories and files
+/BankDataFront/.vscode/*
+/BankDataFront/.vs/*
+Bankdata/.vs/*
+/Bankdata/bin
+/Bankdata/appsettings.json
+
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sw?
+
+*.tsbuildinfo
