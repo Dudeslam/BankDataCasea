@@ -66,7 +66,7 @@ namespace Bankdata.Controllers
         public IActionResult TransferSum(int provId, int recId, int sum)
         {
             var dto = new TransactionDTO(provId, recId, sum, DateTime.UtcNow);
-            if(_transactionBL.Transfer(dto))
+            if( _accountBL.GetAccount(provId)?.Balance >= sum  && _transactionBL.Transfer(dto))
             {
                 _accountBL.UpdateAccount(provId, -sum);
                 _accountBL.UpdateAccount(recId, sum);

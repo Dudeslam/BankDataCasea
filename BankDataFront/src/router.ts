@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from './components/Home.vue'
-import Accounts from './components/Accounts.vue'
+import Home from './pages/Home.vue'
+import Accounts from './pages/Accounts.vue'
 import Transactions from './components/Transactions.vue'
 
 
