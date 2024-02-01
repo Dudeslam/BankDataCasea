@@ -7,24 +7,24 @@ namespace Bankdata.Mappers
     {
         public TransactionMapper() { }
 
-        public static TransactionDTO toDTO (Transaction trans)
+        public static TransactionDTO toDTO (Transactions trans)
         {
             return new TransactionDTO()
             {
                 TransactionID = trans.TransactionID,
-                ProviderId = trans.AccountID,
+                ProviderId = trans.ProviderID,
                 ReceiverId = trans.ReceiverID,
                 TransferSum = trans.Amount,
                 DateTime = trans.Modified,
             };
         }
 
-        public static Transaction ToTransaction(TransactionDTO trans)
+        public static Transactions ToTransaction(TransactionDTO trans)
         {
-            return new Transaction()
+            return new Transactions()
             {
                 TransactionID = trans.TransactionID,
-                AccountID = trans.ProviderId,
+                ProviderID = trans.ProviderId,
                 ReceiverID = trans.ReceiverId,
                 Amount = trans.TransferSum,
                 Modified = trans.DateTime,

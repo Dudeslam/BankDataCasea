@@ -27,9 +27,11 @@ namespace Bankdata.BusinessLogicBanking
             return accData != null ? AccountMapper.ToDTO(accData) : null;
         }
 
-        public bool UpdateAccount(int id)
+        public bool UpdateAccount(int id, double sum)
         {
-            var account = new AccountDTO();
+            var accData = _Accountrepository.GetByID(id);
+            accData.Balance += sum;
+            _Accountrepository.Update(accData);
             return true;
         }
 

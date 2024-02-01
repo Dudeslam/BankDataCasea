@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bankdata.Repository
 {
-    public class TransactionRepo<T> : ITransactionRepository<Transaction> where T : class
+    public class TransactionRepo<T> : ITransactionRepository<Transactions> where T : class
     {
         private readonly DbContext _context = null!;
-        private readonly DbSet<Transaction> _dbSet = null!;
-        public bool Add(Transaction entity)
+        private readonly DbSet<Transactions> _dbSet = null!;
+        public bool Add(Transactions entity)
         {
             try
             {
@@ -21,19 +21,19 @@ namespace Bankdata.Repository
             }
         }
 
-        public IEnumerable<Transaction> GetAll(int id)
+        public IEnumerable<Transactions> GetAll(int id)
         {
             var TransactionList = _dbSet.ToList();
 
             return TransactionList.Where(x => x.TransactionID == id);
         }
 
-        public Transaction? GetById(int id)
+        public Transactions? GetById(int id)
         {
             return _dbSet.FirstOrDefault(x => x.TransactionID == id);
         }
 
-        public bool Update(Transaction entity)
+        public bool Update(Transactions entity)
         {
             try
             {

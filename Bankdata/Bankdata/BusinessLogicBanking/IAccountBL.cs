@@ -1,5 +1,4 @@
 ﻿using Bankdata.DTO;
-using Bankdata.Models;
 
 namespace Bankdata.BusinessLogicBanking
 {
@@ -10,7 +9,7 @@ namespace Bankdata.BusinessLogicBanking
 
         public AccountDTO? GetAccount(int id);
 
-        public bool UpdateAccount(int id);
+        public bool UpdateAccount(int id, double sum);
 
         public bool DeleteAccount(int id);
 

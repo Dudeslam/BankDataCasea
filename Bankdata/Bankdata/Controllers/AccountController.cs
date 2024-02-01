@@ -29,7 +29,7 @@ namespace Bankdata.Controllers
             return accounts.Count() != 0 ? Ok(accounts) : NotFound();
         }
 
-        [HttpGet("Accounts/[id]")]
+        [HttpGet("Accounts/{id}")]
         public IActionResult GetAccountData(int id)
         {
             var accountData = _accountBL.GetAccount(id);
@@ -43,30 +43,36 @@ namespace Bankdata.Controllers
             return Ok(_accountBL.CreateAccount(acc));
         }
 
-        [HttpDelete("Accounts/[id]")]
+        [HttpDelete("Accounts/{id}")]
         public IActionResult DeleteAccount(int id)
         {
             return _accountBL.DeleteAccount(id) == true ? Ok(true) : BadRequest();
         }
 
-        [HttpGet("AccountTransactions/[id]")]
+        [HttpGet("AccountTransactions/{id}")]
         public IActionResult GetTransactionsFromAccount(int id)
         {
             return Ok(_transactionBL.GetAllTransaction(id));
         }
 
-        [HttpGet("Transaction/[id]")]
+        [HttpGet("Transaction/{id}")]
         public IActionResult GetTransaction(int id)
         {
             return Ok(_transactionBL.GetTransaction(id));
 
         }
 
-        [HttpPost("Transfer/[id]")]
+        [HttpPost("Transfer/{id}")]
         public IActionResult TransferSum(int provId, int recId, int sum)
         {
             var dto = new TransactionDTO(provId, recId, sum, DateTime.UtcNow);
-            return Ok(_transactionBL.Transfer(dto));
+            if(_transactionBL.Transfer(dto))
+            {
+                _accountBL.UpdateAccount(provId, -sum);
+                _accountBL.UpdateAccount(recId, sum);
+                return Ok();
+            }
+            return NotFound();
         }
     }
 }

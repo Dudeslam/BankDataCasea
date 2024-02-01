@@ -10,9 +10,9 @@ namespace Bankdata.BusinessLogicBanking
     public class TransactionBL : ITransactionBL
     {
         private TransactionMapper transMapper = new TransactionMapper();
-        private readonly ITransactionRepository<Transaction> _TransactionRepository;
+        private readonly ITransactionRepository<Transactions> _TransactionRepository;
 
-        public TransactionBL(ITransactionRepository<Transaction> TransactionRepository)
+        public TransactionBL(ITransactionRepository<Transactions> TransactionRepository)
         {
             _TransactionRepository = TransactionRepository;
         }
@@ -32,9 +32,9 @@ namespace Bankdata.BusinessLogicBanking
 
         public bool Transfer(TransactionDTO dto)
         {
-            Transaction newTransfer = new Transaction()
+            Transactions newTransfer = new Transactions()
             {
-                AccountID = dto.ProviderId,
+                ProviderID = dto.ProviderId,
                 ReceiverID = dto.ReceiverId,
                 Amount = dto.TransferSum,
                 Modified = dto.DateTime,
