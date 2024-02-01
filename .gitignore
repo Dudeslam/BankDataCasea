@@ -21,7 +21,7 @@ coverage
 /BankDataFront/.vscode/*
 /BankDataFront/.vs/*
 Bankdata/.vs/*
-/Bankdata/bin
+/Bankdata/Bankdata/bin
 /Bankdata/appsettings.json
 
 .idea
